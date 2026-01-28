@@ -1,0 +1,471 @@
+<?xml version="1.0" ?>
+<robot name="mini_cheetah" xmlns:xacro="http://ros.org/wiki/xacro">
+    <material name="darkgray">
+        <color rgba=".2 .2 .2 1"/>
+    </material>
+    <link name="body">
+        <inertial>
+            <mass value="5"/>
+            <origin xyz="0.0 0.0 0.0"/>
+            <inertia ixx="0.01801375" ixy="0" ixz="0.000424826" iyy="0.052344195" iyz="0" izz="0.063719013"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_body.dae"/>
+            </geometry>
+            <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_body.dae"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </collision>
+    </link>
+
+<!--!!!!!!!!!!!!!!!!!!!!!   FR LEG   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="torso_to_abduct_fr_j" type="continuous">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="0.1337 -0.05599 0.005969"/>
+        <parent link="body"/>
+        <child link="abduct_fr"/>
+    </joint>
+    <link name="abduct_fr">
+        <inertial>vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+            <mass value="0.7"/>
+            <origin xyz="0.0015 0.052 0.0"/>
+            <inertia ixx="0.000815672" ixy="-0.000001753" ixz="0.000000117"
+                iyy="0.0004467" iyz="-0.00000015" izz="0.000526032"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_hip.dae"/>
+            </geometry>
+            <origin rpy="3.141592 0 1.5708" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_hip.dae"/>
+            </geometry>
+            <origin rpy="3.141592 0 1.5708" xyz="0.0 0 0"/>
+        </collision>
+    </link>
+    <joint name="abduct_fr_to_thigh_fr_j" type="continuous">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.055 -0.017 0.0"/>
+        <parent link="abduct_fr"/>
+        <child link="thigh_fr"/>
+    </joint>
+    <link name="thigh_fr">
+        <inertial>
+            <mass value="0.884"/>
+            <origin xyz="-0.011186 -0.032393 0.0"/>
+            <inertia ixx="0.00068084" ixy="-0.000257679" ixz="0.000003178"
+                iyy="0.001766531" iyz="0.000003516" izz="0.001619267"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_knee.dae"/>
+            </geometry>
+            <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_knee.dae"/>
+            </geometry>
+            <origin rpy="0 -1.5708 0" xyz="0 0 0"/>
+        </collision>
+    </link>
+    <joint name="thigh_fr_to_knee_fr_j" type="continuous">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0 -0.0595 -0.15"/>
+        <parent link="thigh_fr"/>
+        <child link="shank_fr"/>
+    </joint>
+    <link name="shank_fr">
+        <inertial>
+            <mass value="0.063"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000719905" ixy="0" ixz="0.0" iyy="0.000726173" iyz="0" izz="0.000014957"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_feet.dae"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_feet.dae"/>
+            </geometry>
+            <origin rpy="0 3.141592 0" xyz="0 0 0"/>
+        </collision>
+    </link>
+    <joint name="toe_fr_joint" type="fixed">
+        <parent link="shank_fr"/>
+        <child link="toe_fr"/>
+        <origin xyz="0 0 -0.202"/>
+        <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <link name="toe_fr">
+        <contact>
+            <friction_anchor/>
+            <stiffness value="30000.0"/>
+            <damping value="1000.0"/>
+            <spinning_friction value="0.3"/>
+            <lateral_friction value="3.0"/>
+        </contact>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+            <material name="darkgray"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.05"/>
+            <inertia ixx="0.000025" ixy="0" ixz="0" iyy="0.000025" iyz="0" izz="0.000025"/>
+        </inertial>
+    </link>
+
+<!--!!!!!!!!!!!!!!!!!!!!!   FL LEG   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="torso_to_abduct_fl_j" type="continuous">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="0.1337 0.05599 0.005969"/>
+        <parent link="body"/>
+        <child link="abduct_fl"/>
+    </joint>
+    <link name="abduct_fl">
+        <inertial>
+            <mass value="0.7"/>
+            <origin xyz="0.0015 0.052 0.0"/>
+            <inertia ixx="0.000815672" ixy="-0.000001753" ixz="0.000000117"
+                iyy="0.0004467" iyz="-0.00000015" izz="0.000526032"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_hip.dae"/>
+            </geometry>
+            <origin rpy="0.0 0.0 -1.5708" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_hip.dae"/>
+            </geometry>
+            <origin rpy="0.0 0.0 -1.5708" xyz="0.0 0.0 0.0"/>
+        </collision>
+    </link>
+    <joint name="abduct_fl_to_thigh_fl_j" type="continuous">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="0.055 0.017 0.0"/>
+        <parent link="abduct_fl"/>
+        <child link="thigh_fl"/>
+    </joint>
+    <link name="thigh_fl">
+        <inertial>
+            <mass value="0.884"/>
+            <origin xyz="-0.011186 -0.032393 0.0"/>
+            <inertia ixx="0.00068084" ixy="-0.000257679" ixz="0.000003178"
+                iyy="0.001766531" iyz="0.000003516" izz="0.001619267"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_knee.dae"/>
+            </geometry>
+            <origin rpy="3.141592 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_knee.dae"/>
+            </geometry>
+            <origin rpy="3.141592 -1.5708 0" xyz="0 0 0"/>
+        </collision>
+    </link>
+    <joint name="thigh_fl_to_knee_fl_j" type="continuous">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0 0.0595 -0.15"/>
+        <parent link="thigh_fl"/>
+        <child link="shank_fl"/>
+    </joint>
+    <link name="shank_fl">
+        <inertial>
+            <mass value="0.063"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000719905" ixy="0" ixz="0.0" iyy="0.000726173" iyz="0" izz="0.000014957"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_feet.dae"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_feet.dae"/>
+            </geometry>
+            <origin rpy="0 3.141592 0" xyz="0 0 0"/>
+        </collision>
+    </link>
+    <joint name="toe_fl_joint" type="fixed">
+        <parent link="shank_fl"/>
+        <child link="toe_fl"/>
+        <origin xyz="0 0 -0.202"/>
+        <dynamics damping="0.0" friction="0.0"/>
+    </joint>    
+    <link name="toe_fl">
+        <contact>
+            <friction_anchor/>
+            <stiffness value="30000.0"/>
+            <damping value="1000.0"/>
+            <spinning_friction value="0.3"/>
+            <lateral_friction value="3.0"/>
+        </contact>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+            <material name="darkgray"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.15"/>
+            <inertia ixx="0.000025" ixy="0" ixz="0" iyy="0.000025" iyz="0" izz="0.000025"/>
+        </inertial>
+    </link>
+
+<!--!!!!!!!!!!!!!!!!!!!!!   RR LEG   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="torso_to_abduct_hr_j" type="continuous">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="-0.14529 -0.05599 0.005969"/>
+        <parent link="body"/>
+        <child link="abduct_hr"/>
+    </joint>
+    <link name="abduct_hr">
+        <inertial>
+            <mass value="0.7"/>
+            <origin xyz="0.0015 0.052 0.0"/>
+            <inertia ixx="0.000815672" ixy="-0.000001753" ixz="0.000000117"
+                iyy="0.0004467" iyz="-0.00000015" izz="0.000526032"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_hip.dae"/>
+            </geometry>
+            <origin rpy="0.0 0.0 1.5708" xyz="0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_hip.dae"/>
+            </geometry>
+            <origin rpy="0 0 1.5708" xyz="0 0 0"/>
+        </collision>
+    </link>
+    <joint name="abduct_hr_to_thigh_hr_j" type="continuous">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.055 -0.017 0.0"/>
+        <parent link="abduct_hr"/>
+        <child link="thigh_hr"/>
+    </joint>
+    <link name="thigh_hr">
+        <inertial>
+            <mass value="0.884"/>
+            <origin xyz="-0.011186 -0.032393 0.0"/>
+            <inertia ixx="0.00068084" ixy="-0.000257679" ixz="0.000003178"
+                iyy="0.001766531" iyz="0.000003516" izz="0.001619267"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_knee.dae"/>
+            </geometry>
+            <origin rpy="0.0 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_knee.dae"/>
+            </geometry>
+            <origin rpy="0 -1.5708 0" xyz="0 0 0"/>
+        </collision>
+    </link>
+    <joint name="thigh_hr_to_knee_hr_j" type="continuous">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0 -0.0595 -0.15"/>
+        <parent link="thigh_hr"/>
+        <child link="shank_hr"/>
+    </joint>
+    <link name="shank_hr">
+        <inertial>
+            <mass value="0.063"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000719905" ixy="0" ixz="0.0" iyy="0.000726173" iyz="0" izz="0.000014957"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_feet.dae"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_feet.dae"/>
+            </geometry>
+            <origin rpy="0 3.141592 0" xyz="0 0 0"/>
+        </collision>
+    </link>
+    <joint name="toe_hr_joint" type="fixed">
+        <parent link="shank_hr"/>
+        <child link="toe_hr"/>
+        <origin xyz="0 0 -0.202"/>
+        <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <link name="toe_hr">
+        <contact>
+            <friction_anchor/>
+            <stiffness value="30000.0"/>
+            <damping value="1000.0"/>
+            <spinning_friction value="0.3"/>
+            <lateral_friction value="3.0"/>
+        </contact>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+            <material name="darkgray"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.15"/>
+            <inertia ixx="0.000025" ixy="0" ixz="0" iyy="0.000025" iyz="0" izz="0.000025"/>
+        </inertial>
+  </link>
+
+<!--!!!!!!!!!!!!!!!!!!!!!   RL LEG   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
+    <joint name="torso_to_abduct_hl_j" type="continuous">
+        <axis xyz="1 0 0"/>
+        <origin rpy="0 0 0" xyz="-0.14529 0.05599 0.005969"/>
+        <parent link="body"/>
+        <child link="abduct_hl"/>
+    </joint>
+    <link name="abduct_hl">
+        <inertial>
+            <mass value="0.7"/>
+            <origin xyz="0.0015 0.052 0.0"/>
+            <inertia ixx="0.000815672" ixy="-0.000001753" ixz="0.000000117"
+                iyy="0.0004467" iyz="-0.00000015" izz="0.000526032"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_hip.dae"/>
+            </geometry>
+            <origin rpy="3.141592 0.0 -1.5708" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_hip.dae"/>
+            </geometry>
+            <origin rpy="3.141592 0 -1.5708" xyz="0.0 0 0"/>
+        </collision>
+    </link>
+    <joint name="abduct_hl_to_thigh_hl_j" type="continuous">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0.0 0.0" xyz="-0.055 0.017 0.0"/>
+        <parent link="abduct_hl"/>
+        <child link="thigh_hl"/>
+    </joint>
+    <link name="thigh_hl">
+        <inertial>
+            <mass value="0.884"/>
+            <origin xyz="-0.011186 -0.032393 0.0"/>
+            <inertia ixx="0.00068084" ixy="-0.000257679" ixz="0.000003178"
+                iyy="0.001766531" iyz="0.000003516" izz="0.001619267"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_knee.dae"/>
+            </geometry>
+            <origin rpy="3.141592 -1.5708 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_knee.dae"/>
+            </geometry>
+            <origin rpy="3.141592 -1.5708 0" xyz="0 0 0"/>
+        </collision>
+    </link>
+    <joint name="thigh_hl_to_knee_hl_j" type="continuous">
+        <axis xyz="0 -1 0"/>
+        <origin rpy="0.0 0 0.0" xyz="0 0.0595 -0.15"/>
+        <parent link="thigh_hl"/>
+        <child link="shank_hl"/>
+    </joint>
+    <link name="shank_hl">
+        <inertial>
+            <mass value="0.063"/>
+            <origin xyz="0.0 0.0 -0.209"/>
+            <inertia ixx="0.000719905" ixy="0" ixz="0.0" iyy="0.000726173" iyz="0" izz="0.000014957"/>
+        </inertial>
+        <visual>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_feet.dae"/>
+            </geometry>
+            <origin rpy="0.0 3.141592 0.0" xyz="0.0 0.0 0.0"/>
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://quadruped_ctrl/urdf/mini_cheetah/meshes/paws_feet.dae"/>
+            </geometry>
+            <origin rpy="0 3.141592 0" xyz="0 0 0"/>
+        </collision>
+    </link>
+    <joint name="toe_hl_joint" type="fixed">
+        <parent link="shank_hl"/>
+        <child link="toe_hl"/>
+        <origin xyz="0 0 -0.202"/>
+        <dynamics damping="0.0" friction="0.0"/>
+    </joint>
+    <link name="toe_hl">
+        <contact>
+            <friction_anchor/>
+            <stiffness value="30000.0"/>
+            <damping value="1000.0"/>
+            <spinning_friction value="0.3"/>
+            <lateral_friction value="3.0"/>
+        </contact>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+            <material name="darkgray"/>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="0.015"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.15"/>
+            <inertia ixx="0.000025" ixy="0" ixz="0" iyy="0.000025" iyz="0" izz="0.000025"/>
+        </inertial>
+    </link>
+
+</robot>
+
