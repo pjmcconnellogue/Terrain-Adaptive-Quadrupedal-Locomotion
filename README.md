@@ -9,6 +9,11 @@ This implementation features:
 - **Terrain-adaptive compliance**: Admittance control with contact state detection
 - **SINDy dynamics correction**: Data-driven model refinement for angular dynamics
 
+## Demo
+
+![Robot Navigating Rugged Slope](Rugged_Slope_Trotting.gif)
+*Quadruped robot climbing rugged slope with terrain-adaptive control*
+
 ## Requirements
 
 **System:**
