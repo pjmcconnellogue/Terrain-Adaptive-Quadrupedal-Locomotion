@@ -12,6 +12,7 @@ This implementation features:
 ## Demo
 
 ![Robot Navigating Rugged Slope](Rugged_Slope_Trotting.gif)
+
 *Quadruped robot climbing rugged slope with terrain-adaptive control*
 
 ## Requirements
